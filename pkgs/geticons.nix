@@ -1,5 +1,10 @@
-{ lib, rustPlatform, fetchFromSourcehut, installShellFiles, scdoc }:
-
+{
+  lib,
+  rustPlatform,
+  fetchFromSourcehut,
+  installShellFiles,
+  scdoc,
+}:
 rustPlatform.buildRustPackage rec {
   pname = "geticons";
   version = "1.2.2";
@@ -18,7 +23,7 @@ rustPlatform.buildRustPackage rec {
     scdoc
   ];
 
-  outputs = [ "out" "man" ];
+  outputs = ["out" "man"];
 
   postInstall = ''
     make geticons.1

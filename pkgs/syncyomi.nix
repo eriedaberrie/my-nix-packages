@@ -1,14 +1,14 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, buildGoModule
-, jq
-, moreutils
-, nodePackages
-, cacert
-, esbuild
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  buildGoModule,
+  jq,
+  moreutils,
+  nodePackages,
+  cacert,
+  esbuild,
 }:
-
 buildGoModule rec {
   pname = "syncyomi";
   version = "0.3.8";
@@ -61,16 +61,18 @@ buildGoModule rec {
   ];
 
   env.ESBUILD_BINARY_PATH = lib.getExe (esbuild.override {
-    buildGoModule = args: buildGoModule (args // rec {
-      version = "0.17.19";
-      src = fetchFromGitHub {
-        owner = "evanw";
-        repo = "esbuild";
-        rev = "v${version}";
-        hash = "sha256-PLC7OJLSOiDq4OjvrdfCawZPfbfuZix4Waopzrj8qsU=";
-      };
-      vendorHash = "sha256-+BfxCyg0KkDQpHt/wycy/8CTG6YBA/VJvJFhhzUnSiQ=";
-    });
+    buildGoModule = args:
+      buildGoModule (args
+        // rec {
+          version = "0.17.19";
+          src = fetchFromGitHub {
+            owner = "evanw";
+            repo = "esbuild";
+            rev = "v${version}";
+            hash = "sha256-PLC7OJLSOiDq4OjvrdfCawZPfbfuZix4Waopzrj8qsU=";
+          };
+          vendorHash = "sha256-+BfxCyg0KkDQpHt/wycy/8CTG6YBA/VJvJFhhzUnSiQ=";
+        });
   });
 
   postConfigure = ''
@@ -85,7 +87,8 @@ buildGoModule rec {
   '';
 
   ldflags = [
-    "-s" "-w"
+    "-s"
+    "-w"
     "-X main.version=v${version}"
   ];
 
@@ -98,7 +101,7 @@ buildGoModule rec {
     homepage = "https://github.com/SyncYomi/SyncYomi";
     changelog = "https://github.com/SyncYomi/SyncYomi/releases/tag/v${version}";
     license = lib.licenses.gpl2Only;
-    maintainers = with lib.maintainers; [ eriedaberrie ];
+    maintainers = with lib.maintainers; [eriedaberrie];
     mainProgram = "syncyomi";
     platforms = lib.platforms.linux ++ lib.platforms.darwin;
   };

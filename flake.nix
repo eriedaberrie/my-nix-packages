@@ -19,17 +19,20 @@
     in {
       fastfetch = pkgs.fastfetch.overrideAttrs (new: (old: {
         patches = lib.singleton ./pkgs/flashfetch.patch;
-        postPatch = old.postPatch or "" + ''
-          substituteAllInPlace src/flashfetch.c
-        '';
+        postPatch =
+          old.postPatch
+          or ""
+          + ''
+            substituteAllInPlace src/flashfetch.c
+          '';
         flashfetchOptions = "";
         flashfetchModules = [];
         flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
       }));
 
-      eddie-ui = pkgs.callPackage ./pkgs/eddie-ui.nix { };
-      syncyomi = pkgs.callPackage ./pkgs/syncyomi.nix { };
-      geticons = pkgs.callPackage ./pkgs/geticons.nix { };
+      eddie-ui = pkgs.callPackage ./pkgs/eddie-ui.nix {};
+      geticons = pkgs.callPackage ./pkgs/geticons.nix {};
+      syncyomi = pkgs.callPackage ./pkgs/syncyomi.nix {};
     });
 
     formatter = forSystems (system: (pkgsFor system).alejandra);

@@ -1,22 +1,22 @@
-{ stdenv
-, lib
-, fetchFromGitHub
-, mono
-, dotnet-sdk
-, msbuild
-, makeWrapper
-, findutils
-, pkg-config
-, gtk2
-, gtk3
-, libayatana-appindicator
-, xz
-, stunnel
-, openvpn
-, curl
-, autoPatchelfHook
+{
+  stdenv,
+  lib,
+  fetchFromGitHub,
+  mono,
+  dotnet-sdk,
+  msbuild,
+  makeWrapper,
+  findutils,
+  pkg-config,
+  gtk2,
+  gtk3,
+  libayatana-appindicator,
+  xz,
+  stunnel,
+  openvpn,
+  curl,
+  autoPatchelfHook,
 }:
-
 stdenv.mkDerivation rec {
   pname = "eddie-ui";
   version = "2.21.8";
@@ -28,9 +28,10 @@ stdenv.mkDerivation rec {
     hash = "sha256-kn0Zyli1GaPs4x+alUS18cqnz4xtqFWaSK4+O7AuTgg=";
   };
 
-  arch = if stdenv.system == "i686-linux"
-         then "x86"
-         else "x64";
+  arch =
+    if stdenv.system == "i686-linux"
+    then "x86"
+    else "x64";
 
   buildInputs = [
     stunnel
@@ -71,8 +72,8 @@ stdenv.mkDerivation rec {
     mkdir -p $out/bin $out/lib $out/share/eddie-ui
 
     makeWrapper ${mono}/bin/mono $out/bin/eddie-ui \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ gtk2 ]} \
-      --prefix PATH : ${lib.makeBinPath [ openvpn curl ]} \
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [gtk2]} \
+      --prefix PATH : ${lib.makeBinPath [openvpn curl]} \
       --add-flags $out/lib/eddie-ui/App.Forms.Linux.exe \
       --add-flags --path.resources=$out/share/eddie-ui \
       --add-flags --path.exec='"$@"'
