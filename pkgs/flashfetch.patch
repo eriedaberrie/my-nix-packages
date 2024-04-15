@@ -1,0 +1,51 @@
+diff --git a/src/flashfetch.c b/src/flashfetch.c
+index 2ec8f21b..4b352067 100644
+--- a/src/flashfetch.c
++++ b/src/flashfetch.c
+@@ -9,44 +9,14 @@ int main(void)
+     //Modify instance.config here
+     FFOptionsModules* const options = &instance.config.modules;
+ 
+-    // ffPrepareCPUUsage();
+-    // ffPreparePublicIp(&options->publicIP);
+-    // ffPrepareWeather(&options->weather);
++@flashfetchOptions@
+ 
+     //Does things like starting detection threads, disabling line wrap, etc
+     ffStart();
+ 
+     //Printing
+     void* const modules[] = {
+-        &options->title,
+-        &options->separator,
+-        &options->os,
+-        &options->host,
+-        &options->kernel,
+-        &options->uptime,
+-        &options->packages,
+-        &options->shell,
+-        &options->display,
+-        &options->de,
+-        &options->wm,
+-        &options->wmTheme,
+-        &options->theme,
+-        &options->icons,
+-        &options->font,
+-        &options->cursor,
+-        &options->terminal,
+-        &options->terminalFont,
+-        &options->cpu,
+-        &options->gpu,
+-        &options->memory,
+-        &options->swap,
+-        &options->disk,
+-        &options->localIP,
+-        &options->battery,
+-        &options->powerAdapter,
+-        &options->locale,
+-        &options->break_,
+-        &options->colors,
++@flashfetchModulesRaw@
+     };
+ 
+     for (size_t i = 0; i < sizeof(modules) / sizeof(modules[0]); i++)
