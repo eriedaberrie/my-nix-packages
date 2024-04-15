@@ -18,7 +18,7 @@
       pkgs = pkgsFor system;
     in {
       fastfetch = pkgs.fastfetch.overrideAttrs (new: (old: {
-        patches = lib.singleton ./pkgs/flashfetch.patch;
+        patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
         postPatch =
           old.postPatch
           or ""
@@ -30,9 +30,9 @@
         flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
       }));
 
-      eddie-ui = pkgs.callPackage ./pkgs/eddie-ui.nix {};
-      geticons = pkgs.callPackage ./pkgs/geticons.nix {};
-      syncyomi = pkgs.callPackage ./pkgs/syncyomi.nix {};
+      eddie-ui = pkgs.callPackage ./pkgs/eddie-ui {};
+      geticons = pkgs.callPackage ./pkgs/geticons {};
+      syncyomi = pkgs.callPackage ./pkgs/syncyomi {};
     });
 
     formatter = forSystems (system: (pkgsFor system).alejandra);
