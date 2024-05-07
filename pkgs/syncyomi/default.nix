@@ -11,13 +11,13 @@
 }:
 buildGoModule rec {
   pname = "syncyomi";
-  version = "1.0.0";
+  version = "1.1.1";
 
   src = fetchFromGitHub {
     owner = "SyncYomi";
     repo = "SyncYomi";
     rev = "refs/tags/v${version}";
-    hash = "sha256-ffzOobvVLh/91EOb4LWfayVRso9Vdtc7BE49ohTvwuc=";
+    hash = "sha256-90MA62Zm9ouaf+CnYsbOm/njrUui21vW/VrwKYfsCZs=";
   };
 
   vendorHash = "sha256-/rpT6SatIZ+GVzmVg6b8Zy32pGybprObotyvEgvdL2w=";
