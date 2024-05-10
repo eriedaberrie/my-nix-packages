@@ -1,19 +1,25 @@
 {
   description = "Some custom nix packages (mostly) by eriedaberrie";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs = {nixpkgs, ...}: let
+    systems.url = "github:nix-systems/default-linux";
+  };
+
+  outputs = {
+    self,
+    nixpkgs,
+    systems,
+    ...
+  }: let
     inherit (nixpkgs) lib;
     forSystems = f:
-      lib.genAttrs [
-        "x86_64-linux"
-        "aarch64-linux"
-      ] (system: f nixpkgs.legacyPackages.${system});
+      lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
   in {
-    packages = forSystems (
-      pkgs: {
-        fastfetch = pkgs.fastfetch.overrideAttrs (new: (old: {
+    overlays = {
+      default = _: prev: {
+        fastfetch = prev.fastfetch.overrideAttrs (new: (old: {
           patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
           postPatch =
             old.postPatch
@@ -26,9 +32,21 @@
           flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
         }));
 
-        eddie-ui = pkgs.callPackage ./pkgs/eddie-ui {};
-        geticons = pkgs.callPackage ./pkgs/geticons {};
-        syncyomi = pkgs.callPackage ./pkgs/syncyomi {};
+        eddie-ui = prev.callPackage ./pkgs/eddie-ui {};
+        geticons = prev.callPackage ./pkgs/geticons {};
+        syncyomi = prev.callPackage ./pkgs/syncyomi {};
+      };
+    };
+
+    packages = forSystems (
+      pkgs: {
+        inherit
+          (self.overlays.default pkgs pkgs)
+          fastfetch
+          eddie-ui
+          geticons
+          syncyomi
+          ;
       }
     );
 
