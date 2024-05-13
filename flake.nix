@@ -34,6 +34,7 @@
 
         eddie-ui = prev.callPackage ./pkgs/eddie-ui {};
         geticons = prev.callPackage ./pkgs/geticons {};
+        qlot-cli = prev.callPackage ./pkgs/qlot-cli {};
         syncyomi = prev.callPackage ./pkgs/syncyomi {};
       };
     };
@@ -45,6 +46,7 @@
           fastfetch
           eddie-ui
           geticons
+          qlot-cli
           syncyomi
           ;
       }
