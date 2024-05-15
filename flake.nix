@@ -18,7 +18,7 @@
       lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
   in {
     overlays = {
-      default = _: prev: {
+      default = final: prev: {
         fastfetch = prev.fastfetch.overrideAttrs (new: (old: {
           patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
           postPatch =
@@ -32,20 +32,26 @@
           flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
         }));
 
-        eddie-ui = prev.callPackage ./pkgs/eddie-ui {};
-        geticons = prev.callPackage ./pkgs/geticons {};
-        qlot-cli = prev.callPackage ./pkgs/qlot-cli {};
-        syncyomi = prev.callPackage ./pkgs/syncyomi {};
+        eddie-ui = final.callPackage ./pkgs/eddie-ui {};
+        geticons = final.callPackage ./pkgs/geticons {};
+        lem-sdl2 = final.callPackage ./pkgs/lem {buildSDL2 = true;};
+        lem-ncurses = final.callPackage ./pkgs/lem {buildSDL2 = false;};
+        lem = final.lem-sdl2;
+        qlot-cli = final.callPackage ./pkgs/qlot-cli {};
+        syncyomi = final.callPackage ./pkgs/syncyomi {};
       };
     };
 
     packages = forSystems (
       pkgs: {
         inherit
-          (self.overlays.default pkgs pkgs)
+          (pkgs.extend self.overlays.default)
           fastfetch
           eddie-ui
           geticons
+          lem-sdl2
+          lem-ncurses
+          lem
           qlot-cli
           syncyomi
           ;
