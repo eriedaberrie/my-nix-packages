@@ -34,10 +34,9 @@
 
         eddie-ui = final.callPackage ./pkgs/eddie-ui {};
         geticons = final.callPackage ./pkgs/geticons {};
-        lem-sdl2 = final.callPackage ./pkgs/lem {buildSDL2 = true;};
-        lem-ncurses = final.callPackage ./pkgs/lem {buildSDL2 = false;};
+        lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
+        lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
         lem = final.lem-sdl2;
-        qlot-cli = final.callPackage ./pkgs/qlot-cli {};
         syncyomi = final.callPackage ./pkgs/syncyomi {};
       };
     };
@@ -52,7 +51,6 @@
           lem-sdl2
           lem-ncurses
           lem
-          qlot-cli
           syncyomi
           ;
       }

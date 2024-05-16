@@ -4,7 +4,6 @@
   stdenv,
   stdenvNoCC,
   fetchFromGitHub,
-  qlot-cli,
   which,
   git,
   cacert,
@@ -20,7 +19,7 @@
   SDL2_ttf,
   writeText,
   makeWrapper,
-  buildSDL2 ? true,
+  withSDL2 ? true,
 }: let
   lem = sbcl.buildASDFSystem rec {
     pname = "lem";
@@ -38,7 +37,7 @@
       inherit src version;
 
       nativeBuildInputs = [
-        qlot-cli
+        sbcl.pkgs.qlot-cli
         which
         git
         cacert
@@ -73,10 +72,10 @@
         libffi
         openssl
       ]
-      ++ lib.optionals (!buildSDL2) [
+      ++ lib.optionals (!withSDL2) [
         ncurses
       ]
-      ++ lib.optionals buildSDL2 [
+      ++ lib.optionals withSDL2 [
         SDL2
         SDL2_image
         SDL2_ttf
@@ -127,7 +126,7 @@
 
     buildScript = let
       lemSystem =
-        if buildSDL2
+        if withSDL2
         then "lem-sdl2"
         else "lem-ncurses";
     in
@@ -176,7 +175,7 @@
       echo $out
 
       wrapProgram $out/bin/lem \
-        ${lib.optionalString buildSDL2 "--set-default SDL_VIDEODRIVER wayland,x11"} \
+        ${lib.optionalString withSDL2 "--set-default SDL_VIDEODRIVER wayland,x11"} \
         --prefix LD_LIBRARY_PATH : $out/lib:$_LD_LIBRARY_PATH
 
       runHook postInstall
