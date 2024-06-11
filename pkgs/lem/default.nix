@@ -78,9 +78,7 @@
       ++ lib.optionals withSDL2 [
         SDL2
         SDL2_image
-        (SDL2_ttf.overrideAttrs (old: {
-          configureFlags = old.configureFlags or [] ++ ["--disable-freetype-builtin"];
-        }))
+        SDL2_ttf
       ];
 
     nativeBuildInputs = [
