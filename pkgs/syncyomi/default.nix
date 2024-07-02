@@ -3,10 +3,8 @@
   stdenvNoCC,
   fetchFromGitHub,
   buildGoModule,
-  jq,
-  moreutils,
-  nodePackages,
-  cacert,
+  nodejs,
+  pnpm_9,
   esbuild,
 }:
 buildGoModule rec {
@@ -22,42 +20,17 @@ buildGoModule rec {
 
   vendorHash = "sha256-/rpT6SatIZ+GVzmVg6b8Zy32pGybprObotyvEgvdL2w=";
 
-  pnpmDeps = stdenvNoCC.mkDerivation {
-    pname = "${pname}-pnpm-deps";
-    inherit src version;
-    sourceRoot = "${src.name}/web";
+  pnpmRoot = "web";
 
-    nativeBuildInputs = [
-      jq
-      moreutils
-      nodePackages.pnpm
-      cacert
-    ];
-
-    installPhase = ''
-      runHook preInstall
-
-      export HOME=$(mktemp -d)
-      pnpm config set store-dir $out
-      pnpm install --frozen-lockfile --no-optional --ignore-script
-
-      rm -rf $out/v3/tmp
-      for f in $(find $out -name "*.json"); do
-        sed -i -E -e 's/"checkedAt":[0-9]+,//g' $f
-        jq --sort-keys . $f | sponge $f
-      done
-
-      runHook postInstall
-    '';
-
-    dontBuild = true;
-    dontFixup = true;
-    outputHashMode = "recursive";
-    outputHash = "sha256-YOmAgzs3tDvZLRgFLkj6CY88Fm5fxbpqCUhILc8n+6c=";
+  pnpmDeps = pnpm_9.fetchDeps {
+    inherit pname version src;
+    sourceRoot = "${src.name}/${pnpmRoot}";
+    hash = "sha256-25Bg8sTeH/w25KdfwgZNoqBXz2d5c1QD5vGb33xpTCA=";
   };
 
   nativeBuildInputs = [
-    nodePackages.pnpm
+    nodejs
+    pnpm_9.configHook
   ];
 
   env.ESBUILD_BINARY_PATH = lib.getExe (esbuild.override {
@@ -75,14 +48,9 @@ buildGoModule rec {
         });
   });
 
-  postConfigure = ''
-    export HOME=$(mktemp -d)
-    pushd web
-
-    pnpm config set store-dir $pnpmDeps
-    pnpm install --offline --frozen-lockfile --no-optional --ignore-script
+  preBuild = ''
+    pushd $pnpmRoot
     pnpm build
-
     popd
   '';
 
