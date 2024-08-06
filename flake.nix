@@ -37,7 +37,6 @@
         lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
         lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
         lem = final.lem-sdl2;
-        syncyomi = final.callPackage ./pkgs/syncyomi {};
       };
     };
 
