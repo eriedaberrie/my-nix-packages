@@ -1,7 +1,7 @@
 {
   stdenv,
   lib,
-  fetchFromGitHub,
+  pins,
   mono,
   dotnet-sdk,
   msbuild,
@@ -17,16 +17,11 @@
   curl,
   autoPatchelfHook,
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "eddie-ui";
   version = "2.21.8";
 
-  src = fetchFromGitHub {
-    owner = "AirVPN";
-    repo = "Eddie";
-    rev = version;
-    hash = "sha256-kn0Zyli1GaPs4x+alUS18cqnz4xtqFWaSK4+O7AuTgg=";
-  };
+  src = pins.eddie;
 
   arch =
     if stdenv.system == "i686-linux"

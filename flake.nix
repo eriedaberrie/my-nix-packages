@@ -24,6 +24,7 @@
             "dotnet-runtime-6.0.36"
           ];
         }));
+    pins = import ./npins;
   in {
     overlays = {
       default = final: prev: {
@@ -40,7 +41,7 @@
           flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
         }));
 
-        eddie-ui = final.callPackage ./pkgs/eddie-ui {};
+        eddie-ui = final.callPackage ./pkgs/eddie-ui {inherit pins;};
         geticons = final.callPackage ./pkgs/geticons {};
         lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
         lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
@@ -60,6 +61,16 @@
           lem
           syncyomi
           ;
+      }
+    );
+
+    devShells = forSystems (
+      pkgs: {
+        default = pkgs.mkShell {
+          nativeBuildInputs = [
+            pkgs.npins
+          ];
+        };
       }
     );
 

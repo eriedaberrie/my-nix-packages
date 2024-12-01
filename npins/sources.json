@@ -1,0 +1,20 @@
+{
+  "pins": {
+    "eddie": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "AirVPN",
+        "repo": "Eddie"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "version": "2.21.8",
+      "revision": "1c5e45f001a7c259c92bc1faa4ba32f84610c6e7",
+      "url": "https://api.github.com/repos/AirVPN/Eddie/tarball/2.21.8",
+      "hash": "022f5sq3ngmf92d5ba3dik7sgjpinm29b6hzwgna66dmb351jzcj"
+    }
+  },
+  "version": 3
+}
