@@ -15,7 +15,15 @@
   }: let
     inherit (nixpkgs) lib;
     forSystems = f:
-      lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+      lib.genAttrs (import systems) (system:
+        f (import nixpkgs {
+          inherit system;
+          config.permittedInsecurePackages = [
+            "dotnet-sdk-6.0.428"
+            "dotnet-sdk-wrapped-6.0.428"
+            "dotnet-runtime-6.0.36"
+          ];
+        }));
   in {
     overlays = {
       default = final: prev: {
