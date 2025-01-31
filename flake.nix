@@ -29,7 +29,9 @@
   in {
     overlays = {
       default = final: prev: {
-        fastfetch = prev.fastfetch.overrideAttrs (new: (old: {
+        fastfetch = (prev.fastfetch.override {
+          flashfetchSupport = true;
+        }).overrideAttrs (new: (old: {
           patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
           postPatch =
             old.postPatch
