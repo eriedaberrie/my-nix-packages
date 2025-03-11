@@ -29,20 +29,22 @@
   in {
     overlays = {
       default = final: prev: {
-        fastfetch = (prev.fastfetch.override {
-          flashfetchSupport = true;
-        }).overrideAttrs (new: (old: {
-          patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
-          postPatch =
-            old.postPatch
-            or ""
-            + ''
-              substituteAllInPlace src/flashfetch.c
-            '';
-          flashfetchOptions = "";
-          flashfetchModules = [];
-          flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
-        }));
+        fastfetch =
+          (prev.fastfetch.override {
+            flashfetchSupport = true;
+          })
+          .overrideAttrs (new: (old: {
+            patches = lib.singleton ./pkgs/fastfetch/flashfetch.patch;
+            postPatch =
+              old.postPatch
+              or ""
+              + ''
+                substituteAllInPlace src/flashfetch.c
+              '';
+            flashfetchOptions = "";
+            flashfetchModules = [];
+            flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
+          }));
 
         eddie-ui = final.callPackage ./pkgs/eddie-ui {inherit pins;};
         geticons = final.callPackage ./pkgs/geticons {};
@@ -69,8 +71,8 @@
 
     devShells = forSystems (
       pkgs: {
-        default = pkgs.mkShell {
-          nativeBuildInputs = [
+        default = pkgs.mkShellNoCC {
+          packages = [
             pkgs.npins
           ];
         };
