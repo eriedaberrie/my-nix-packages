@@ -47,7 +47,6 @@
           }));
 
         eddie-ui = final.callPackage ./pkgs/eddie-ui {inherit pins;};
-        geticons = final.callPackage ./pkgs/geticons {};
         lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
         lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
         lem = final.lem-sdl2;
@@ -60,11 +59,9 @@
           (pkgs.extend self.overlays.default)
           fastfetch
           eddie-ui
-          geticons
           lem-sdl2
           lem-ncurses
           lem
-          syncyomi
           ;
       }
     );
