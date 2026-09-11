@@ -18,12 +18,6 @@
       lib.genAttrs (import systems) (system:
         f (import nixpkgs {
           inherit system;
-          config.permittedInsecurePackages = [
-            "dotnet-sdk-6.0.428"
-            "dotnet-sdk-wrapped-6.0.428"
-            "dotnet-runtime-6.0.36"
-            "dotnet-runtime-wrapped-6.0.36"
-          ];
         }));
     pins = import ./npins;
   in {
@@ -46,7 +40,6 @@
             flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
           }));
 
-        eddie-ui = final.callPackage ./pkgs/eddie-ui {inherit pins;};
         lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
         lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
         lem = final.lem-sdl2;
@@ -58,7 +51,6 @@
         inherit
           (pkgs.extend self.overlays.default)
           fastfetch
-          eddie-ui
           lem-sdl2
           lem-ncurses
           lem
