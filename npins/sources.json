@@ -1,4 +1,18 @@
 {
-  "pins": {},
+  "pins": {
+    "interception-k2k": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "zsugabubus",
+        "repo": "interception-k2k"
+      },
+      "branch": "master",
+      "submodules": false,
+      "revision": "5746bf39a321610bb6019781034f82e4c6e21e97",
+      "url": "https://github.com/zsugabubus/interception-k2k/archive/5746bf39a321610bb6019781034f82e4c6e21e97.tar.gz",
+      "hash": "sha256-q2zlOvyW5jlasEIPVc+k6jh2wJZ7sUEpvXh/leH/hKw="
+    }
+  },
   "version": 8
 }

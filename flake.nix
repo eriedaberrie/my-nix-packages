@@ -40,6 +40,8 @@
             flashfetchModulesRaw = lib.concatMapStrings (m: "&options->${m},") new.flashfetchModules;
           }));
 
+        interception-k2k = final.callPackage ./pkgs/interception-k2k {inherit (pins) interception-k2k;};
+
         lem-sdl2 = final.callPackage ./pkgs/lem {withSDL2 = true;};
         lem-ncurses = final.callPackage ./pkgs/lem {withSDL2 = false;};
         lem = final.lem-sdl2;
@@ -51,6 +53,7 @@
         inherit
           (pkgs.extend self.overlays.default)
           fastfetch
+          interception-k2k
           lem-sdl2
           lem-ncurses
           lem
