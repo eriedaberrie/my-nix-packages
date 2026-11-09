@@ -1,24 +1,11 @@
 {
   description = "Some custom nix packages (mostly) by eriedaberrie";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
-    systems.url = "github:nix-systems/default-linux";
-  };
-
-  outputs = {
-    self,
-    nixpkgs,
-    systems,
-    ...
-  }: let
+  outputs = {self, ...} @ args: let
+    inputs = (import ./.tack) {overrides = args.tackOverrides or {};};
+    inherit (inputs) nixpkgs systems;
     inherit (nixpkgs) lib;
-    forSystems = f:
-      lib.genAttrs (import systems) (system:
-        f (import nixpkgs {
-          inherit system;
-        }));
+    forSystems = f: lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
     pins = import ./npins;
   in {
     overlays = {
@@ -51,7 +38,7 @@
     packages = forSystems (
       pkgs: {
         inherit
-          (pkgs.extend self.overlays.default)
+          (self.overlays.default pkgs pkgs)
           fastfetch
           interception-k2k
           lem-sdl2

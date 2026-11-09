@@ -19,8 +19,8 @@ stdenv.mkDerivation (finalAttrs: {
       name = "joined-rules-headers";
       paths =
         lib.zipListsWith writeTextDir
-          ["cfg/map-rules.h.in" "cfg/tap-rules.h.in" "cfg/multi-rules.h.in"]
-          [map-rules-h tap-rules-h multi-rules-h];
+        ["cfg/map-rules.h.in" "cfg/tap-rules.h.in" "cfg/multi-rules.h.in"]
+        [map-rules-h tap-rules-h multi-rules-h];
     };
   in ["CONFIG_DIR=${rulesHeaders}"];
 

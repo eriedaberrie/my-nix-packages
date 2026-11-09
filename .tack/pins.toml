@@ -1,0 +1,16 @@
+# tack pins
+# edit by hand or with tack add / rm / alias
+# nix reads pins.lock.json
+# this file drives tack update
+
+[tack]
+recomposable = true
+
+[inputs]
+
+[inputs.nixpkgs]
+url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst"
+
+[inputs.systems]
+url = "github:nix-systems/default-linux"
+
